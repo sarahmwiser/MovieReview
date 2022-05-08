@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './index.css';
+import { store } from './components/store';
+import MovieList from './components/MovieList';
+import Header from './components/Header';
+import { navLink } from './components/NavLink';
+
+const useState = React.useState
+
 
 function App() {
+  const [movies, setMovies] = useState(store);
+
+  
+
+  const addReview = (id, rating, comment) => {
+    const movie = movies.find(movie => movie.id === id);
+    movie.reviews.push(
+      {
+        user: `user$(Math.floor(Math.random() * 1000) + 100)`,
+        stars: rating,
+        comment: comment
+      }
+    );
+    setMovies([...movies, movie]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <><div className='containter' /><Header links = {navLink} />
+    <h1>Movie Review Site</h1><div className="movies-list-container">
+      <MovieList movies={movies} addReview={addReview} />
+    </div></>
+      
+   
+
   );
 }
 
